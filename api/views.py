@@ -9,9 +9,12 @@ from .resource_handler import get_resources
 class TransportList(APIView):
 
 		def get(self, request, format=None):
-				# fro = request.query_params.get('from')
-				# to = request.query_params.get('to')
-				fro = 1
-				to = 10
-				resources = get_resources(fro, to)
+				fro = request.query_params.get('from')
+				to = request.query_params.get('to')
+
+				resources = []
+				if fro is None and to is None:
+					resources.append(get_resources(fro=1, to=100))
+				else: 
+					resources.append(get_resources(fro=int(fro), to=int(to)))
 				return Response(resources)
